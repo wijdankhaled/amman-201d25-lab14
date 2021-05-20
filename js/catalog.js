@@ -12,7 +12,9 @@ function populateForm() {
   //TODO: Add an <option> tag inside the form's select for each product
   const selectElement = document.getElementById('items');
   for (let i in Product.allProducts) {
-
+    let option = document.createElement('option');
+    selectElement.appendChild(option);
+    option.textContent=Product.allProducts[i].name;
   }
 
 }
@@ -23,7 +25,7 @@ function populateForm() {
 function handleSubmit(event) {
 
   // TODO: Prevent the page from reloading
-
+    event.preventDefault();
   // Do all the things ...
   addSelectedItemToCart();
   cart.saveToLocalStorage();
@@ -34,18 +36,42 @@ function handleSubmit(event) {
 
 // TODO: Add the selected item and quantity to the cart
 function addSelectedItemToCart() {
+  const selectElement = document.getElementById('items');
   // TODO: suss out the item picked from the select list
+  let selectItems = selectElement.selectedIndex;
+  let nameOfItems = Product.allProducts[selectItems].name;
   // TODO: get the quantity
+  let quantity = document.getElementById('quantity').value;
+  console.log(quantity);
+  console.log(selectItems);
+  console.log(nameOfItems);
   // TODO: using those, add one item to the Cart
+ cart.items.push ([nameOfItems , quantity]);
+
+  console.log(cart.items);
 }
 
 // TODO: Update the cart count in the header nav with the number of items in the Cart
-function updateCounter() {}
+function updateCounter() {
+  let counter = document.getElementById('itemCount');
+  counter.textContent = cart.items.length;
+}
 
 // TODO: As you add items into the cart, show them (item & quantity) in the cart preview div
+let cartContents = document.getElementById('cartContents');
+let ul = document.createElement('ul')
 function updateCartPreview() {
   // TODO: Get the item and quantity from the form
   // TODO: Add a new element to the cartContents div with that information
+  let quantity = document.getElementById('quantity').value;
+  const selectElement = document.getElementById('items');
+  let itemSelected = selectElement.selectedIndex;
+  let nameOfItems = Product.allProducts[itemSelected].name;
+
+  cartContents.appendChild(ul);
+  let li=document.createElement('li');
+  ul.appendChild(li);
+  li.textContent=`${nameOfItems} -- ${quantity}`;
 }
 
 // Set up the "submit" event listener on the form.
